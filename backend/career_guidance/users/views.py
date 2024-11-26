@@ -7,6 +7,7 @@ from rest_framework.permissions import AllowAny
 from django.contrib.auth import get_user_model
 from rest_framework.generics import RetrieveUpdateAPIView
 from rest_framework.permissions import IsAuthenticated
+from .ml_model import  recommend_career
 
 User = get_user_model()
 
@@ -26,3 +27,13 @@ class RegisterView(APIView):
             serializer.save() 
             return Response({"message": "User registered successfully"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class CareerGuidanceView(APIView):
+    def post(self, request):
+       
+        skills = request.data.get('skills')
+        if not skills:
+            return Response({"error": "Skills are required"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        recommended_career = recommend_career(skills)
+        return Response({"recommended_career": recommended_career}, status=status.HTTP_200_OK)
