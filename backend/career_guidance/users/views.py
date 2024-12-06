@@ -8,6 +8,9 @@ from django.contrib.auth import get_user_model
 from rest_framework.generics import RetrieveUpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from .ml_model import  recommend_career
+from rest_framework_simplejwt.views import TokenObtainPairView
+from django.http import HttpResponse
+from django.shortcuts import redirect
 
 User = get_user_model()
 
@@ -37,3 +40,10 @@ class CareerGuidanceView(APIView):
         
         recommended_career = recommend_career(skills)
         return Response({"recommended_career": recommended_career}, status=status.HTTP_200_OK)
+    
+class LoginView(TokenObtainPairView):
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+        if response.status_code == 200:
+            return Response(response.data, status=response.status_code)
+        return Response({"error": "Invalid credentials"}, status=response.status_code)
