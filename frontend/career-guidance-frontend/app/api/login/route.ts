@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 
-export async function POST(requset: Request) {
+export async function POST(request: Request) {
   try {
-    const formData = await requset.formData();
+    const formData = await request.formData();
     const username = formData.get("username");
     const password = formData.get("password");
 
@@ -13,20 +13,32 @@ export async function POST(requset: Request) {
       );
     }
 
-    const response = await fetch("http://127.0.0.1:8000/api/users/login/", {
+    const response = await fetch("http://127.0.0.1:8000/login/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
     });
 
-    const data = response.json();
+    const data = await response.json();
 
-    if (!response.ok) {
-      return NextResponse.json(data, { status: response.status });
+    if (response.ok) {
+      const authToken = data.access;
+
+      const redirectResponse = NextResponse.redirect(new URL("/", request.url));
+      redirectResponse.cookies.set("authToken", authToken, {
+        httpOnly: true,
+        path: "/",
+      });
+
+      return redirectResponse;
+    } else {
+      return NextResponse.json(
+        { error: data.detail || "Login failed" },
+        { status: 400 }
+      );
     }
-    return NextResponse.redirect(`/login/success`);
   } catch (error) {
-    console.error(error);
+    console.error("Login error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
