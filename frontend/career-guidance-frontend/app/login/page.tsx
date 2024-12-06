@@ -9,11 +9,7 @@ const Login = () => {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 py-8">
       <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
         <h1 className="text-3xl font-semibold mb-6 text-center">Login</h1>
-        <form
-          method="POST"
-          action="http://127.0.0.1:8000/login/"
-          className="space-y-4"
-        >
+        <form method="POST" action="/api/login" className="space-y-4">
           <div>
             <input
               type="text"
