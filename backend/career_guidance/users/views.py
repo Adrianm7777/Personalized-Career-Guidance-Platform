@@ -22,7 +22,6 @@ class UserProfileView(RetrieveUpdateAPIView):
         return self.request.user
     
 class RegisterView(APIView):
-    permission_classes = [AllowAny]
 
     def post(self, request):
         serializer = RegisterSerializer(data = request.data)
@@ -32,6 +31,7 @@ class RegisterView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class CareerGuidanceView(APIView):
+    permission_classes = [IsAuthenticated] 
     def post(self, request):
        
         skills = request.data.get('skills')
