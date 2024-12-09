@@ -157,3 +157,4 @@ CORS_ALLOW_HEADERS = [
     'accept-encoding',
     'cache-control',
 ]
+CORS_ALLOW_CREDENTIALS = True
