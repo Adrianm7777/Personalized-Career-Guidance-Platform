@@ -17,6 +17,7 @@ export async function POST(request: Request) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
+      credentials: "include",
     });
 
     const data = await response.json();
@@ -28,6 +29,8 @@ export async function POST(request: Request) {
       redirectResponse.cookies.set("authToken", authToken, {
         httpOnly: true,
         path: "/",
+        sameSite: "strict",
+        secure: true,
       });
 
       return redirectResponse;

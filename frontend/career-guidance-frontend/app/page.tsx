@@ -1,11 +1,10 @@
 "use client";
 import React, { useState, FormEvent } from "react";
-
 interface CareerGuidanceResponse {
   recommended_career: string;
 }
 
-const CareerGuidance: React.FC = () => {
+const CareerGuidance = () => {
   const [skills, setSkills] = useState<string>("");
   const [recommendedCareer, setRecommendedCareer] = useState<string | null>(
     null
@@ -26,9 +25,9 @@ const CareerGuidance: React.FC = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer YOUR_ACCESS_TOKEN_HERE`, // Replace with a valid token
           },
           body: JSON.stringify({ skills }),
+          credentials: "include",
         }
       );
 

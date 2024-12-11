@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 
-export async function POST(requset: Request) {
+export async function POST(request: Request) {
   try {
-    const formData = await requset.formData();
-    const username = formData.get("usernames");
+    const formData = await request.formData();
+    const username = formData.get("username");
     const email = formData.get("email");
     const password = formData.get("password");
 
